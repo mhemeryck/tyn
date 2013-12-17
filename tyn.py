@@ -2,10 +2,21 @@
 
 import argparse
 from datetime import datetime
-from glob import glob
 import os
 import sys
 
+from fabric.api import local, sudo
+
+def ddsk(args):
+    """mount mac backup disk under ubuntu"""
+    
+    result = local('uname -n', capture=True)
+    if not result == 'drum':
+        raise Exception('This is not drum ...')
+
+    local('sudo mount -t hfsplus -o force,rw /dev/sdb2 /mnt')
+    local('sudo bindfs -u $(id -u) -g $(id -g) '
+          '--create-for-user=501 --create-for-group=20 /mnt/Data Data')
 
 def lsfigs(args):
     """list figures in folder"""
@@ -52,9 +63,12 @@ def main():
     command = args.command
     if command == 'lsfigs':
         lsfigs(args.args)
+    if command == 'ddsk':
+        ddsk(args.args)
     else:
         raise Exception('Unknown command')
 
 
 if __name__ == '__main__':
     sys.exit(main())
+
