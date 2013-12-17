@@ -63,7 +63,7 @@ def main():
     command = args.command
     if command == 'lsfigs':
         lsfigs(args.args)
-    if command == 'ddsk':
+    elif command == 'ddsk':
         ddsk(args.args)
     else:
         raise Exception('Unknown command')
