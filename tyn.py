@@ -16,7 +16,7 @@ def ddsk(args):
 
     local('sudo mount -t hfsplus -o force,rw /dev/sdb2 /mnt')
     local('sudo bindfs -u $(id -u) -g $(id -g) '
-          '--create-for-user=501 --create-for-group=20 /mnt/Data Data')
+          '--create-for-user=501 --create-for-group=20 /mnt/Data ~/Data')
 
 def lsfigs(args):
     """list figures in folder"""
