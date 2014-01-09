@@ -5,11 +5,35 @@ from datetime import datetime
 import os
 import sys
 
-from fabric.api import local, sudo
+from tabulate import tabulate
+from fabric.api import local
+
+def parse_line(line, sep='|'):
+    """ helper function for mdtable"""
+
+    return [col.strip() for col in line.split(sep)[1:-1]]
+
+def mdtable(args):
+    """markdown pipe table outline"""
+
+    if not len(args) == 1:
+        raise Exception('Supply markdown table from command line')
+    table_file, = args
+    with open(table_file, 'r') as fh:
+        lines = fh.readlines()
+
+    headers = parse_line(lines[0])
+    table = []
+    for line in lines[2:]:
+        table.append(parse_line(line))
+
+    with open(table_file, 'w') as fh:
+        fh.write(tabulate(table, headers=headers, tablefmt='pipe'))
+
 
 def ddsk(args):
     """mount mac backup disk under ubuntu"""
-    
+
     result = local('uname -n', capture=True)
     if not result == 'drum':
         raise Exception('This is not drum ...')
@@ -65,6 +89,8 @@ def main():
         lsfigs(args.args)
     elif command == 'ddsk':
         ddsk(args.args)
+    elif command == 'mdtable':
+        mdtable(args.args)
     else:
         raise Exception('Unknown command')
 
