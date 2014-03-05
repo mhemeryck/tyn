@@ -69,7 +69,7 @@ def lsfigs(args):
                 d['path'] = path
                 d['base'] = base = os.path.basename(filename)
                 d['description'], ext = os.path.splitext(base)
-                if ext in ['.png', '.jpg', '.jpeg', '.pdf']:
+                if ext in ['.png', '.jpg', '.jpeg', '.pdf', '.svg']:
                     fmt = fig_fmt
                 else:
                     fmt = file_fmt
